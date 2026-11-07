@@ -20,14 +20,12 @@ const argv = yargs(process.argv.slice(2))
 dotenv.config()
 const { CUSTOM_NODE_URL, INFURA_KEY, MNEMONIC, ETHERSCAN_API_KEY, PK } = process.env
 
-const DEFAULT_MNEMONIC = 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat'
-
 const sharedNetworkConfig: HttpNetworkUserConfig = {}
 if (PK) {
   sharedNetworkConfig.accounts = [PK]
-} else {
+} else if (MNEMONIC) {
   sharedNetworkConfig.accounts = {
-    mnemonic: MNEMONIC || DEFAULT_MNEMONIC,
+    mnemonic: MNEMONIC,
   }
 }
 

@@ -11,12 +11,11 @@ dotenv.config()
 
 const { INFURA_KEY, MNEMONIC, ETHERSCAN_API_KEY, CUSTOM_NODE_URL, HARDHAT_CHAIN_ID = 31337 } = process.env
 
-const sharedNetworkConfig: HttpNetworkUserConfig = {
-  accounts: {
-    mnemonic:
-      MNEMONIC ||
-      'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat',
-  },
+const sharedNetworkConfig: HttpNetworkUserConfig = {}
+if (MNEMONIC) {
+  sharedNetworkConfig.accounts = {
+    mnemonic: MNEMONIC,
+  }
 }
 
 const customNetwork = CUSTOM_NODE_URL
