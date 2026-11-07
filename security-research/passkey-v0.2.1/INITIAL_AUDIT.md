@@ -61,18 +61,15 @@ The WebAuthn path calls `verifySignatureAllowMalleability`, rather than the low-
 **Follow-up:** Test high-S and low-S variants against the same Safe transaction hash and nonce. Determine whether any downstream component relies on signature-byte uniqueness or whether the Safe nonce fully prevents replay.
 
 
-### OBS-04 — Formal-verification harness differs from production parser
+### OBS-04 — Formal-verification source artifacts are not included
 
-**Locations:**
-- Production: `modules/passkey/contracts/libraries/WebAuthn.sol`, `castSignature(bytes)`.
-- Formal harness: `modules/passkey/certora/munged/WebAuthn.sol`, `castSignature(bytes)`.
-- Harness import: `modules/passkey/certora/harnesses/WebAuthnHarnessWithMunge.sol`.
+**Location:** `modules/passkey/docs/v0.2.1/audit-report-certora.pdf`.
 
-The munged verification copy adds checks that the two dynamic ABI offsets are less than `signature.length` before loading the dynamic-field lengths. Those checks are not present in the production `WebAuthn.sol` implementation. The Certora configuration verifies `WebAuthnHarnessWithMunge`, which imports the munged copy.
+The tagged source tree includes a Certora audit PDF but does not include the claimed `certora/munged` source, harness, or specification paths. The earlier worklog statement asserting a production-versus-munged parser discrepancy was unsupported and is withdrawn.
 
-**Current assessment:** This is a confirmed source-model divergence and formal-verification coverage limitation for malformed/out-of-slice dynamic offsets. It is not, by itself, a confirmed exploitable vulnerability. The existing proof results must not be described as proving the exact production parser behavior for all malformed calldata.
+**Current assessment:** No model/source divergence has been established. The Certora report's proof assumptions and covered properties cannot be independently reconstructed from the tagged source tree alone.
 
-**Follow-up:** Differentially test production and munged parser behavior using adversarial offsets, including offsets into fixed signature words and calldata padding. Measure whether the production path can bypass the intended signature-size bound, trigger disproportionate memory expansion, or otherwise change an authorization result. Record the exact compiler and call context. Do not classify as a bounty finding until an externally relevant security impact is reproduced.
+**Follow-up:** Review the PDF report and obtain the corresponding Certora specifications from the audit provider if deeper proof-coverage validation is required. Do not treat the withdrawn discrepancy as a vulnerability or reportable finding.
 
 ## 4. Preliminary control review
 
