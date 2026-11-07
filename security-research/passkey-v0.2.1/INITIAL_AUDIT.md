@@ -135,3 +135,18 @@ Before any remediation commit or bounty submission:
 4. Reproduce a concrete unauthorized security impact.
 5. Verify the impact against the current supported release and bounty scope.
 6. Only then prepare a narrowly scoped patch and private disclosure report.
+
+
+## 9. Verified release comparison
+
+Compared the following production Solidity files at `passkey/v0.2.1` and `passkey/v0.2.1-1`. Their Git blob SHAs are identical across both tags:
+
+| File | Blob SHA |
+|---|---|
+| `contracts/libraries/WebAuthn.sol` | `c0efe5f99a149c663f8267f21a92c56263ac599c` |
+| `contracts/libraries/P256.sol` | `882cb1e6b600b654a3f177a06dd6c28a87503a8d` |
+| `contracts/SafeWebAuthnSignerFactory.sol` | `90363359840989d01c1a2689f859cf81b197435e` |
+| `contracts/4337/SafeWebAuthnSharedSigner.sol` | `f73b6eb037f1ef9c5c1f98c348f515b04c216749` |
+
+This verifies that these four core Solidity files did not change between the two tags. PR #486's diff contains verification/build tooling changes rather than changes to these production contracts. The release label alone must not be interpreted as a Solidity logic fix.
+
